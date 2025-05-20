@@ -22,5 +22,8 @@
   "homepage": "https://github.com/ramithwork/Expression-Calculator#readme",
   "devDependencies": {
     "parcel-bundler": "^1.12.5"
+  },
+  "dependencies": {
+    "firebase": "^11.8.0"
   }
 }

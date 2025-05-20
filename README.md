@@ -2,7 +2,7 @@
 A claculator that resolves math expressions with custom references, database storage, and user account management.
 
 ## Versioning
-- 1.0.0 Project initialisation. 
+- 1.0.0 Project initialisation.
 
 ## Features
 - Type a math expression with custom references to values. 
