@@ -54,4 +54,8 @@ const app = initializeApp(firebaseConfig);
 - view-auth (sign in, sign up)
 
 ## TODOS
-[-] Implement Authentication
+[-] Implement Authentication:
+    Password & Google provider signup/signin/verify/signout done. Run through the code and refactor. Test authentication.
+[-] Setup Firestore.
+[-] Figure out data models.
+[-] Implement eval view.

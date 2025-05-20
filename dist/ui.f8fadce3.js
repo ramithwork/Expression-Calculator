@@ -21987,6 +21987,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createUserPasswordProvider = createUserPasswordProvider;
 exports.sendVerificationEmail = sendVerificationEmail;
+exports.signUserOut = signUserOut;
+exports.signinPasswordProvider = signinPasswordProvider;
+exports.signinWithGoogle = signinWithGoogle;
 var _firebaseConfig = require("./firebase-config.js");
 var _auth = require("firebase/auth");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -22016,37 +22019,93 @@ function _createUserPasswordProvider() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          _context.prev = 0;
           (0, _auth.createUserWithEmailAndPassword)(auth, email, password).then(function (userCredential) {
             // User has signed up successfully.
             console.log("User created CRED", userCredential.user);
             console.log("User created CURR", auth.currentUser);
             var user = auth.currentUser;
             sendVerificationEmail(user);
-            return true;
+            // return true;
+          }).catch(function (error) {
+            console.log(error);
           });
-          _context.next = 8;
-          break;
-        case 4:
-          _context.prev = 4;
-          _context.t0 = _context["catch"](0);
-          console.log(_context.t0);
-          return _context.abrupt("return", false);
-        case 8:
+        case 1:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 4]]);
+    }, _callee);
   }));
   return _createUserPasswordProvider.apply(this, arguments);
 }
-function sendVerificationEmail(_x3) {
+function signinPasswordProvider(_x3, _x4) {
+  return _signinPasswordProvider.apply(this, arguments);
+}
+function _signinPasswordProvider() {
+  _signinPasswordProvider = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(email, password) {
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          (0, _auth.signInWithEmailAndPassword)(auth, email, password).then(function (userCredential) {
+            // Signed in 
+            var user = userCredential.user;
+            console.log("User ".concat(user.email, " signed in."));
+            // return true;
+          }).catch(function (error) {
+            console.log(error);
+            // return false;
+          });
+        case 1:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  }));
+  return _signinPasswordProvider.apply(this, arguments);
+}
+function signinWithGoogle() {
+  return _signinWithGoogle.apply(this, arguments);
+}
+function _signinWithGoogle() {
+  _signinWithGoogle = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var provider;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          provider = new _auth.GoogleAuthProvider();
+          (0, _auth.signInWithPopup)(auth, provider).then(function (result) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            var credential = _auth.GoogleAuthProvider.credentialFromResult(result);
+            var token = credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+            // IdP data available using getAdditionalUserInfo(result)
+            console.log("User ".concat(user.email, " signed in"));
+          }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.customData.email;
+            // The AuthCredential type that was used.
+            var credential = _auth.GoogleAuthProvider.credentialFromError(error);
+            console.log("errorCode:", errorCode);
+            console.log("error.customData.email", email);
+          });
+        case 2:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3);
+  }));
+  return _signinWithGoogle.apply(this, arguments);
+}
+function sendVerificationEmail(_x5) {
   return _sendVerificationEmail.apply(this, arguments);
 }
 function _sendVerificationEmail() {
-  _sendVerificationEmail = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(user) {
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
+  _sendVerificationEmail = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(user) {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
           (0, _auth.sendEmailVerification)(user).then(function () {
             // Email verification sent!
@@ -22056,11 +22115,35 @@ function _sendVerificationEmail() {
           });
         case 1:
         case "end":
-          return _context2.stop();
+          return _context4.stop();
       }
-    }, _callee2);
+    }, _callee4);
   }));
   return _sendVerificationEmail.apply(this, arguments);
+}
+function signUserOut() {
+  return _signUserOut.apply(this, arguments);
+}
+function _signUserOut() {
+  _signUserOut = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          // Sign out a signed in user.
+          (0, _auth.signOut)(auth).then(function () {
+            // Sign-out successful.
+            console.log("User signed out");
+          }).catch(function (error) {
+            // An error happened.
+            console.error("Sign-out error:", error);
+          });
+        case 1:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5);
+  }));
+  return _signUserOut.apply(this, arguments);
 }
 },{"./firebase-config.js":"scripts/firebase-config.js","firebase/auth":"../node_modules/firebase/auth/dist/esm/index.esm.js"}],"scripts/ui.js":[function(require,module,exports) {
 "use strict";
@@ -22068,20 +22151,41 @@ function _sendVerificationEmail() {
 var _firebaseAuth = require("./firebase-auth");
 var signinBtn = document.getElementById("signin");
 var signupBtn = document.getElementById("signup");
+var signoutBtn = document.getElementById("signout");
+var googleSigninBtn = document.getElementById("google-signin");
 signupBtn.addEventListener("click", function (e) {
   e.preventDefault();
   var emailInput = document.getElementById("email");
   var passwordInput = document.getElementById("password");
   var email = emailInput.value;
   var password = passwordInput.value;
-  if ((0, _firebaseAuth.createUserPasswordProvider)(email, password)) {
-    console.log("User created and returned true.");
-  } else {
-    console.log("User NOT created and returned false.");
-  }
+  // if (createUserPasswordProvider(email, password)) {
+  //   console.log("User created and returned true.");
+  // } else {
+  //   console.log("User NOT created and returned false.");
+  // }
+  (0, _firebaseAuth.createUserPasswordProvider)(email, password);
 });
 signinBtn.addEventListener("click", function (e) {
   e.preventDefault();
+  var emailInput = document.getElementById("email");
+  var passwordInput = document.getElementById("password");
+  var email = emailInput.value;
+  var password = passwordInput.value;
+  // if (signinPasswordProvider(email, password)) {
+  //   console.log("User signed in and returned true.");
+  // } else {
+  //   console.log("User did NOT sign in and returned false.");
+  // }
+  (0, _firebaseAuth.signinPasswordProvider)(email, password);
+});
+googleSigninBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  (0, _firebaseAuth.signinWithGoogle)();
+});
+signoutBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  (0, _firebaseAuth.signUserOut)();
 });
 },{"./firebase-auth":"scripts/firebase-auth.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
