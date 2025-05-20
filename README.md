@@ -53,3 +53,5 @@ const app = initializeApp(firebaseConfig);
   - card-expr
 - view-auth (sign in, sign up)
 
+## TODOS
+[-] Implement Authentication
