@@ -1,5 +1,6 @@
-import { app } from "./firebase-config.js"
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
+import { app } from "./firebase-config.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import { updateAccount } from "./ui.js";
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
@@ -9,6 +10,7 @@ onAuthStateChanged(auth, (user) => {
   try {
     if (user) {
       console.log("user", user);
+      updateAccount(user.email);
     } else {
       console.log("User not signed in.")
     }
@@ -84,6 +86,7 @@ export async function signUserOut() {
   signOut(auth).then(() => {
       // Sign-out successful.
       console.log("User signed out");
+      updateAccount();
   }).catch((error) => {
       // An error happened.
       console.error("Sign-out error:", error);

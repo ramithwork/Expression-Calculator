@@ -33,3 +33,7 @@ nav {
 .view-auth * {
   margin: 0.5em 0;
 }
+
+#signout {
+  display: none;
+}

@@ -1,4 +1,4 @@
-import { createUserPasswordProvider, signinPasswordProvider, signUserOut, signinWithGoogle } from "./firebase-auth";
+import { createUserPasswordProvider, signinPasswordProvider, signUserOut, signinWithGoogle } from "./firebase-auth.js";
 
 const signinBtn = document.getElementById("signin");
 const signupBtn = document.getElementById("signup");
@@ -42,3 +42,15 @@ signoutBtn.addEventListener("click", function(e){
   e.preventDefault();
   signUserOut();
 });
+
+export function updateAccount(email) {
+  const accountLink = document.getElementById("account");
+  if (email) {
+    accountLink.textContent = email;
+    signoutBtn.style.display = "inline-block";
+  } else {
+    accountLink.textContent = "Sign In";
+    signoutBtn.style.display = "none";
+  }
+}
+

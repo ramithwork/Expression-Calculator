@@ -17,13 +17,7 @@ A claculator that resolves math expressions with custom references, database sto
 - Firebase (Authentication, Firestore)
 - NPM, Parcel
 
-## Data Models
-
-expcal 
-  expressions
-    key
-
-## Firebase Data
+## Firebase Data & Config
 Project ID: expressioncal
 
 npm install firebase
@@ -47,15 +41,45 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+### Firestore Data Structure
+users (collection)
+  └── {uid} (document)
+        └── email: "user@example.com" // optional metadata
+
+        expressions (subcollection)
+          └── {expressionId} (document)
+                └── expression: "2 + 3 * (4 - 1)"
+                └── timestamp: <Firebase timestamp>
+
+### Firestore Rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Match the users collection (optional profile access)
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Subcollection: expressions under a user
+      match /expressions/{expressionId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}
+
 ## UI Components
 - view-cal (main view)
   - card-evaluated
   - card-expr
 - view-auth (sign in, sign up)
 
+## Bugs
+[-] onAuthStateChanged in firebase-auth.js executes twice. According to research this is a common known bug.
+
 ## TODOS
 [-] Implement Authentication:
     Password & Google provider signup/signin/verify/signout done. Run through the code and refactor. Test authentication.
-[-] Setup Firestore.
-[-] Figure out data models.
 [-] Implement eval view.
+[-] Setup Firestore.
+[x] Figure out data models.
